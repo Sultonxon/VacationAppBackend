@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using VacationApp.Common.Models;
 using VacationApp.Common.Services;
+using VacationApp.Filters;
 
 namespace VacationApp.Controllers;
 
@@ -17,6 +18,7 @@ public class VacationController : Controller
     
     [HttpPost("create")]
     [Authorize]
+    [ValidationFilter]
     public async Task<IActionResult> Create([FromBody]VacationCreateModel model)
     {
         try
@@ -33,6 +35,7 @@ public class VacationController : Controller
     
     [HttpPost("approve/{id}")]
     [Authorize(Roles = "Admin, SuperAdmin")]
+    [ValidationFilter]
     public async Task<IActionResult> Approve(string id)
     {
         try
@@ -48,6 +51,7 @@ public class VacationController : Controller
     
     [HttpPost("reject")]
     [Authorize(Roles = "Admin, SuperAdmin")]
+    [ValidationFilter]
     public async Task<IActionResult> Reject([FromBody]VacationRejectModel model)
     {
         try
@@ -63,6 +67,7 @@ public class VacationController : Controller
     
     [HttpDelete("delete/{id}")]
     [Authorize]
+    [ValidationFilter]
     public async Task<IActionResult> Delete(string id)
     {
         try
@@ -78,6 +83,7 @@ public class VacationController : Controller
     
     [HttpGet("available")]
     [Authorize]
+    [ValidationFilter]
     public async Task<IActionResult> AvailableDaysForThisYear()
     {
         try
@@ -96,6 +102,7 @@ public class VacationController : Controller
     
     [HttpGet("all")]
     [Authorize]
+    [ValidationFilter]
     public async Task<IActionResult> GetAll([FromQuery]int page, [FromQuery]int pageSize)
     {
         try
@@ -111,6 +118,7 @@ public class VacationController : Controller
     
     [HttpGet("user")]
     [Authorize]
+    [ValidationFilter]
     public async Task<IActionResult> GetByUser([FromQuery]int page, [FromQuery]int pageSize)
     {
         try

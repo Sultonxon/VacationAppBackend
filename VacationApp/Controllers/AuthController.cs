@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using VacationApp.Common.Models;
 using VacationApp.Common.Services;
+using VacationApp.Filters;
 
 namespace VacationApp.Controllers;
 
@@ -21,6 +22,7 @@ public class AuthController : Controller
     
     [HttpPost("register")]
     [Authorize(Roles = "Admin, SuperAdmin")]
+    [ValidationFilter]
     public async Task<IActionResult> Register([FromBody]RegisterModel model)
     {
         var result = await _authService.Register(model);
@@ -33,6 +35,7 @@ public class AuthController : Controller
 
     [HttpPost("register-admin")]
     [Authorize(Roles = "SuperAdmin, Admin")]
+    [ValidationFilter]
     public async Task<IActionResult> CreateAdmin([FromBody]RegisterModel model)
     {
         var result = await _authService.CreateAdmin(model);
@@ -45,6 +48,7 @@ public class AuthController : Controller
     
     [HttpPost("register-manager")]
     [Authorize(Roles = "SuperAdmin, Admin")]
+    [ValidationFilter]
     public async Task<IActionResult> CreateManager([FromBody]RegisterModel model)
     {
         var result = await _authService.CreateManager(model);
@@ -57,6 +61,7 @@ public class AuthController : Controller
     
     [HttpPost("login")]
     [AllowAnonymous]
+    [ValidationFilter]
     public async Task<IActionResult> Login([FromBody]LoginModel model)
     {
         try
@@ -77,6 +82,7 @@ public class AuthController : Controller
     
     [HttpPost("update")]
     [Authorize]
+    [ValidationFilter]
     public async Task<IActionResult> Update([FromBody]UserUpdateModel model)
     {
         try
@@ -92,6 +98,7 @@ public class AuthController : Controller
     
     [HttpPost("refresh-token")]
     [Authorize]
+    [ValidationFilter]
     public async Task<IActionResult> RefreshToken()
     {
         try
@@ -106,6 +113,7 @@ public class AuthController : Controller
     
     [HttpGet("employees/{page}/{pageSize}")]
     [Authorize]
+    [ValidationFilter]
     public async Task<IActionResult> GetEmployees(int page, int pageSize)
     {
         return Ok(await _authService.GetPaged(page, pageSize));
@@ -113,6 +121,7 @@ public class AuthController : Controller
     
     [HttpDelete("delete/{id}")]
     [Authorize(Roles = "Admin, SuperAdmin")]
+    [ValidationFilter]
     public async Task<IActionResult> Delete(string id)
     {
         try
@@ -128,6 +137,7 @@ public class AuthController : Controller
     
     [HttpPost("refresh-password")]
     [Authorize(Roles = "Admin, SuperAdmin")]
+    [ValidationFilter]
     public async Task<IActionResult> RefreshPassword([FromBody]RefreshPasswordModel model)
     {
         try

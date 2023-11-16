@@ -103,6 +103,7 @@ app.UseAuthorization();
 app.MapControllers();
 
 var provider = app.Services.CreateScope().ServiceProvider;
+provider.GetService<AppDbContext>().Database.Migrate();
 SeedUsers.SeedAdmin(provider.GetService<UserManager<UserEntity>>(),
     provider.GetService<RoleManager<IdentityRole>>(), "12345678").Wait();
     
